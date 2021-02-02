@@ -23,7 +23,7 @@ ENV CONF_DIR = /${APP_HOME_DIR}/conf
 
 # Create less privelaged user and its corresponding data and conf dirs then add correct permissions
 RUN addgroup -S ${APP_GROUP} && \
-    adduser -S -G ${APP_GROUP} ${APP_USER} && \
+    adduser -S -G -u 1000 ${APP_GROUP} ${APP_USER} && \
     mkdir ${DATA_DIR} ${CONF_DIR} && \
     chown -R ${APP_USER} ${DATA_DIR} ${CONF_DIR} && \
     chmod 700 ${APP_HOME_DIR} ${DATA_DIR} ${CONF_DIR}
