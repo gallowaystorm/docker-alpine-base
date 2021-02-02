@@ -25,4 +25,9 @@ RUN addgroup -S app && \
     chmod 700 '${APP_HOME_DIR}' '${DATA_DIR}' '${CONF_DIR}'
 
 
+#remove cron jobs
+RUN rm -fr /var/spool/cron && \
+	rm -fr /etc/crontabs && \
+	rm -fr /etc/periodic
+
 
