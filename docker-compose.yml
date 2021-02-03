@@ -6,4 +6,4 @@ services:
       context: .
       dockerfile: Dockerfile
     image: alpine-base
-    container_name: alpine-base:v.1.0.0
+    container_name: alpine-base

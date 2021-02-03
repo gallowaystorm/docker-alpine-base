@@ -6,28 +6,25 @@ FROM alpine:3.13.1
 # Update all packages
 RUN apk update --no-cache
 
+# Add needed packages
+RUN apk add --no-cache openssh
 
 # Set envrionment variables
 
 # User apps should be using
-ENV APP_USER = app
-# Group for app user
-ENV APP_GROUP = app
+ENV APP_USER=app
 # Home directory
-ENV APP_HOME_DIR = /${APP_USER}
+ENV APP_HOME_DIR=/${APP_USER}
 # Where persistent data should be stored
-ENV DATA_DIR = ${APP_HOME_DIR}/data
+ENV DATA_DIR=${APP_HOME_DIR}/data
 # Where configuration should be stored
-ENV CONF_DIR = /${APP_HOME_DIR}/conf
+ENV CONF_DIR=/${APP_HOME_DIR}/conf
 
-
-# Create less privelaged user and its corresponding data and conf dirs then add correct permissions
-RUN addgroup -S ${APP_GROUP} && \
-    adduser -S -G -u 1000 ${APP_GROUP} ${APP_USER} && \
-    mkdir ${DATA_DIR} ${CONF_DIR} && \
-    chown -R ${APP_USER} ${DATA_DIR} ${CONF_DIR} && \
-    chmod 700 ${APP_HOME_DIR} ${DATA_DIR} ${CONF_DIR}
-
+# Add custom user and setup home directory
+RUN adduser -s /bin/true -u 1000 -D -h ${APP_HOME_DIR} ${APP_USER} \
+  && mkdir ${DATA_DIR} ${CONF_DIR} \
+  && chown -R ${APP_USER} ${APP_HOME_DIR} $CONF_DIR \
+  && chmod 700 ${APP_HOME_DIR} ${DATA_DIR} ${CONF_DIR}
 
 # Remove cron jobs
 RUN rm -fr /var/spool/cron && \
@@ -83,4 +80,4 @@ COPY post-install.sh '${APP_HOME_DIR}'/
 RUN chmod 500 '${APP_HOME_DIR}'/post-install.sh
 
 # default directory is /app
-WORKDIR $APP_DIR
+WORKDIR APP_HOME_DIR
