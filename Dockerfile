@@ -3,6 +3,9 @@
 # This is the latest version as of 2/2/2021
 FROM alpine:3.13.1
 
+# make a pipe fail on the first failure
+SHELL ["/bin/sh", "-o", "pipefail", "-c"]
+
 # Update all packages
 RUN apk update --no-cache
 
@@ -18,7 +21,7 @@ ENV APP_HOME_DIR=/${APP_USER}
 # Where persistent data should be stored
 ENV DATA_DIR=${APP_HOME_DIR}/data
 # Where configuration should be stored
-ENV CONF_DIR=/${APP_HOME_DIR}/conf
+ENV CONF_DIR=${APP_HOME_DIR}/conf
 
 # Add custom user and setup home directory
 RUN adduser -s /bin/true -u 1000 -D -h ${APP_HOME_DIR} ${APP_USER} \

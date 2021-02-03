@@ -7,3 +7,4 @@ services:
       dockerfile: Dockerfile
     image: alpine-base
     container_name: alpine-base
+    entrypoint: /bin/sh
