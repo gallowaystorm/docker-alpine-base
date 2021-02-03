@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  alpine-base:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: alpine-base
+    container_name: alpine-base
