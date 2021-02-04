@@ -35,8 +35,8 @@ RUN rm -fr /var/spool/cron && \
 	rm -fr /etc/periodic
 
 # Remove all accounts except root and app
-RUN sed -i -r "/^('${APP_USER}'|root|nobody)/!d" /etc/group && \
-    sed -i -r "/^('${APP_USER}'|root|nobody)/!d" /etc/passwd
+# RUN sed -i -r "/^('${APP_USER}'|root|nobody)/!d" /etc/group && \
+#     sed -i -r "/^('${APP_USER}'|root|nobody)/!d" /etc/passwd
 
 # Remove interactive login shell for everybody
 RUN sed -i -r 's#^(.*):[^:]*$#\1:/sbin/nologin#' /etc/passwd
@@ -81,6 +81,8 @@ RUN find /bin /etc /lib /sbin /usr -xdev -type l -exec test ! -e {} \; -delete
 # add-in post installation file for permissions
 COPY post-install.sh ${APP_HOME_DIR}/
 RUN chmod 500 ${APP_HOME_DIR}/post-install.sh
+
+USER ${APP_USER}
 
 # default directory is /app
 WORKDIR ${APP_HOME_DIR}
